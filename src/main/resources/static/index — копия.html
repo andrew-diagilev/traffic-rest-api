@@ -1,0 +1,304 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
+          integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <script type="text/javascript"
+            src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#updateDashboard").click(function () {
+                    var data = $('#timeForm').serialize();
+                    sendForm(data, 'main_dash_board/by_time');
+                    return false;
+
+                }
+            );
+        });
+        function sendForm(data, url) {
+            $.ajax({
+                type: 'POST',
+                headers: {
+                    Accept: "application/json; charset=utf-8"
+                },
+                dataType: "json",
+                data: data,
+                url: url,
+                success: function (result) {
+                    google.charts.load('current', {
+                        'packages': ['corechart',]
+                    });
+                    google.charts.load('current', {'packages': ['gauge']});
+                    google.charts.setOnLoadCallback(function () {
+                        drawChart(result);
+                    });
+                }
+            });
+        }
+        function drawChart(result) {
+
+            /*КІЛЬКІСТЬ*/
+            var amount = new google.visualization.DataTable();
+            amount.addColumn('string', 'Час');
+            amount.addColumn('number', 'Кількість');
+            var amountArray = [];
+            $.each(result.amountList, function (i, obj) {
+                amountArray.push([obj.startTime, obj.amount]);
+            });
+            amount.addRows(amountArray);
+
+            /*ШВИДКІСТЬ*/
+            var speed = new google.visualization.DataTable();
+            speed.addColumn('string', 'Час');
+            speed.addColumn('number', 'Швидкість');
+            var sum = 0;
+            var speedArray = [];
+            $.each(result.speedList, function (i, obj) {
+                speedArray.push([obj.startTime, obj.vehiclesSpeed]);
+                sum += obj.vehiclesSpeed;
+            });
+            var average = Math.round(sum / speedArray.length);
+            speed.addRows(speedArray);
+
+            /*ЗАТРИМКА*/
+            var delay = new google.visualization.DataTable();
+            delay.addColumn('string', 'Час');
+            delay.addColumn('number', 'Затримка');
+            delay.addColumn('number', 'Середня затримка 2019');
+
+            var delayArray = [];
+            $.each(result.delayList, function (i, obj) {
+                delayArray.push([obj.time, obj.currentDelay, obj.history_delay]);
+            });
+            delay.addRows(delayArray);
+
+
+            var amount_options = {
+                title: 'Кількість транспортних засобів по годинам',
+                width: 630,
+                height: 350,
+                legend: 'none',
+                hAxis: {
+                    title: "Дата/час",
+                    textStyle: {
+                        fontSize: 9
+                    }
+                },
+                trendlines: {0: {}}
+            };
+
+            var speed_options = {
+                title: 'Швидкість індивідуального транспорту по годинам',
+                width: 630,
+                height: 350,
+                legend: 'none',
+                curveType: 'function',
+                colors: ['#e49307'],
+                hAxis: {
+                    title: "Дата/час",
+                    textStyle: {
+                        fontSize: 9
+                    }
+                },
+                trendlines: {0: {}}
+            };
+
+
+            var delay_options = {
+                title: 'Затримка індивідуального транспорту по годинам',
+                width: 630,
+                height: 350,
+                legend: 'none',
+                curveType: 'function',
+                colors: ['#e4000b', '#FFA500'],
+                hAxis: {
+                    title: "Дата/час",
+                    textStyle: {
+                        fontSize: 9
+                    }
+                },
+                trendlines: {0: {}}
+            };
+
+
+            var speedAverage = google.visualization.arrayToDataTable([
+                ['Label', 'Value'],
+                ['Швидкість', average],
+            ]);
+
+            var speedGaugeOption = {
+                width: 630,
+                height: 350,
+                redFrom: 0, redTo: 20,
+                yellowFrom: 20, yellowTo: 40,
+                greenFrom: 40, greenTo: 70,
+            };
+
+            var amountChart = new google.visualization.ColumnChart(document
+                .getElementById('speed'));
+            amountChart.draw(amount, amount_options);
+
+            var speedChart = new google.visualization.LineChart(document
+                .getElementById('amount'));
+            speedChart.draw(speed, speed_options);
+
+            var delayChart = new google.visualization.LineChart(document
+                .getElementById('delay'));
+            delayChart.draw(delay, delay_options);
+
+            var speedGauge = new google.visualization.Gauge(document
+                .getElementById('speedGauge'));
+            speedGauge.draw(speedAverage, speedGaugeOption);
+        }
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Brand</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+                <li><a href="#">Link</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">One more separated link</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Link</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Nanavigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Main Dashboard</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+                <li><a href="#">Link</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Аналітика<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Швидкість</a></li>
+                        <li><a href="#">Затримка</a></li>
+                        <li><a href="#">Кількість унікальніх ТЗ</a></li>
+                        <li><a href="#">Транзит</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Затори/теплокарта заторів</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Рейтинг заторів</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Link</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div>
+    <form id="timeForm" method="post"><label for="start_time">Початкова дата:</label>
+        <input type="datetime-local" name="start_time" id="start_time"/>
+        <label for="end_time">Кінцева дата:</label>
+        <input type="datetime-local" name="end_time" id="end_time"/>
+        <input id="updateDashboard" type="button" value="Оновити">
+    </form>
+</div>
+<table class="columns">
+    <tr>
+        <td>
+            <div id="speed" style="border: 1px solid #ccc"></div>
+        </td>
+        <td>
+            <div id="amount" style="border: 1px solid #ccc"></div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="delay" style="border: 1px solid #ccc"></div>
+        </td>
+        <td>
+            <div id="speedGauge" style="border: 1px solid #ccc"></div>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
