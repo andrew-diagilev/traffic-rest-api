@@ -19,6 +19,8 @@
 <body>
 <jsp:include page="includes/header.jsp"/>
 <script type="text/javascript">
+    var chartWidth;
+    var chartHeight;
     $(document).ready(function () {
         sendForm({period: 'last_half'}, 'main_dash_board');
         $("#updateDashboard").click(function () {
@@ -105,13 +107,17 @@
             transitArray.push([new Date(obj.startTime), obj.amount]);
         });
         transit.addRows(transitArray);
-        var currentTransit = transitArray[transitArray.length-1][1];
+        var currentTransit = transitArray[transitArray.length - 1][1];
 
+        if(chartHeight == undefined && chartWidth == undefined){
+            chartHeight = document.getElementsByClassName('card h-100')[0].offsetHeight * 2;
+            chartWidth = document.getElementsByClassName('chart')[0].offsetWidth;
+        }
 
         var amount_options = {
             title: 'Кількість транспортних засобів',
-            width: 1500,
-            height: 350,
+            width: chartWidth,
+            height: chartHeight,
             legend: 'none',
             hAxis: {
                 title: "Дата/час",
@@ -124,8 +130,8 @@
 
         var speed_options = {
             title: 'Швидкість індивідуального транспорту',
-            width: 1500,
-            height: 350,
+            width: chartWidth,
+            height: chartHeight,
             legend: 'none',
             curveType: 'function',
             colors: ['#e49307'],
@@ -141,8 +147,8 @@
 
         var delay_options = {
             title: 'Затримка індивідуального транспорту',
-            width: 1500,
-            height: 350,
+            width: chartWidth,
+            height: chartHeight,
             legend: {position: 'none'},
             curveType: 'function',
             colors: ['#e4000b', '#FFA500'],
@@ -159,8 +165,8 @@
 
         var transit_options = {
             title: 'Транзит',
-            width: 1500,
-            height: 350,
+            width: chartWidth,
+            height: chartHeight,
             legend: {position: 'none'},
             curveType: 'function',
             colors: ['green', '#FFA500'],
@@ -173,15 +179,14 @@
         };
 
 
-
         var speedLast = google.visualization.arrayToDataTable([
             ['Label', 'Value'],
             ['Швидкість', currentSpeed],
         ]);
 
         var speedGaugeOption = {
-            width: 250,
-            height: 500,
+            width: document.getElementsByClassName('gauge')[0].offsetWidth,
+            height: document.getElementsByClassName('gauge')[0].offsetWidth,
             redFrom: 0, redTo: 20,
             yellowFrom: 20, yellowTo: 40,
             greenFrom: 40, greenTo: 70,
@@ -194,8 +199,8 @@
         ]);
 
         var delayGaugeOption = {
-            width: 250,
-            height: 500,
+            width: document.getElementsByClassName('gauge')[0].offsetWidth,
+            height: document.getElementsByClassName('gauge')[0].offsetWidth,
             redFrom: 0.8, redTo: 1.5,
             yellowFrom: 0.5, yellowTo: 0.8,
             max: 1.5,
@@ -209,8 +214,8 @@
         ]);
 
         var amountGaugeOption = {
-            width: 250,
-            height: 500,
+            width: document.getElementsByClassName('gauge')[0].offsetWidth,
+            height: document.getElementsByClassName('gauge')[0].offsetWidth,
             redFrom: 750000, redTo: 1000000,
             yellowFrom: 650000, yellowTo: 750000,
             max: 1000000,
@@ -223,8 +228,8 @@
         ]);
 
         var transitGaugeOption = {
-            width: 250,
-            height: 500,
+            width: document.getElementsByClassName('gauge')[0].offsetWidth,
+            height: document.getElementsByClassName('gauge')[0].offsetWidth,
             max: 100000,
         };
 
@@ -278,75 +283,92 @@
             </div>
         </div>
     </div>
+
+    <%--Карточки--%>
+    <%--Cкорость--%>
     <div class="row">
-        <div class="col-lg">
-            <div class="card">
+        <div class="col-md-2 mb-4">
+            <div class="card bg-light h-100">
+                <div class="card-header">
+                    Поточна швидкість
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title">Поточна швидкість</h5>
-                    <div id="speedGauge"></div>
+                    <div class="gauge" id="speedGauge"></div>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Оновлено: </small>
                 </div>
             </div>
         </div>
-        <div class="col-md-auto">
-            <div class="card">
+        <div class="col-md-10 mb-4">
+            <div class="card h-100">
                 <div class="card-body">
-                    <div id="speed"></div>
+                    <div class="chart" id="speed"></div>
                 </div>
+
             </div>
         </div>
     </div>
+    <%--Количество--%>
     <div class="row">
-        <div class="col-lg">
-            <div class="card">
+        <div class="col-md-2 mb-4">
+            <div class="card bg-light h-100">
+                <div class="card-header">
+                    Поточна кі-ть автомобілів
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title">Поточна кі-ть автомобілів</h5>
-                    <div id="amountGauge"></div>
+                    <div class="gauge" id="amountGauge"></div>
                 </div>
             </div>
-            </div>
-        <div class="col-md-auto">
-                    <div class="card">
-                        <div class="card-body">
-                            <div id="amount"></div>
-                        </div>
-                    </div>
         </div>
-    </div>
-        <div class="row">
-            <div class="col-lg">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Поточна затримка</h5>
-                        <div id="delayGauge"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-auto">
-                <div class="card">
-                    <div class="card-body">
-                        <div id="delay"></div>
-                    </div>
+        <div class="col-md-10 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="chart" id="amount"></div>
                 </div>
             </div>
         </div>
     </div>
-<div class="row">
-    <div class="col-lg">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Поточний транзит</h5>
-                <div id="transitGauge"></div>
+    <%--Задержка--%>
+    <div class="row">
+        <div class="col-md-2 mb-4">
+            <div class="card bg-light h-100">
+                <div class="card-header">
+                    Поточна затримка
+                </div>
+                <div class="card-body">
+                    <div class="gauge" id="delayGauge"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-10 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="chart" id="delay"></div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-auto">
-        <div class="card">
-            <div class="card-body">
-                <div id="transit"></div>
+    <%--Транзит--%>
+    <div class="row">
+        <div class="col-md-2 mb-4">
+            <div class="card bg-light h-100">
+                <div class="card-header">
+                    Поточний транзит
+                </div>
+                <div class="card-body">
+                    <div class="gauge" id="transitGauge"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-10 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="chart" id="transit"></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 </body>
 </html>

@@ -1,7 +1,5 @@
 package com.traffic.api.DAO;
 
-
-import com.traffic.api.models.Amount;
 import com.traffic.api.models.PublicTransport;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

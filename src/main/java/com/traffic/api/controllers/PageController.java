@@ -40,4 +40,19 @@ public class PageController {
     public String traffic_jam() {
         return ("traffic_jam");
     }
+
+    @GetMapping("/speed")
+    public String speed() {
+        return ("speed");
+    }
+
+    @GetMapping("/crossing_points")
+    public String crossing_points() {
+        return ("crossing_points");
+    }
+
+    @GetMapping("/transit")
+    public String transit() {
+        return ("transit");
+    }
 }

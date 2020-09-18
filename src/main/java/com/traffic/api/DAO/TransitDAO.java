@@ -21,7 +21,7 @@ public interface TransitDAO extends JpaRepository<Transit, Integer>{
             "    group by start_time order by start_time", nativeQuery = true)
     public List<Transit> getLast(String startTime);
 
-    @Query(value ="SELECT in_id as id, crossing_point.road_name, sum(amount) as amount FROM db_traffic.transit join crossing_point on crossing_point.id = transit.in_id  where start_time = ?1 group by in_id order by amount desc", nativeQuery = true)
+    @Query(value ="SELECT in_id as id, crossing_point.road_name, sum(amount) as amount, date(start_time) as start_time, date(end_time) as end_time FROM db_traffic.transit join crossing_point on crossing_point.id = transit.in_id  where date(start_time) = ?1  group by in_id order by amount desc", nativeQuery = true)
     public List<Transit> getByTime(String startTime);
 
 }

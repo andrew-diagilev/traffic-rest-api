@@ -1,6 +1,7 @@
 package com.traffic.api.controllers;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import com.traffic.api.DAO.*;
 import com.traffic.api.models.*;
@@ -22,21 +23,30 @@ public class RequestController {
     @Autowired
     private DelayDAO delayDAO;
     @Autowired
-    PublicTransportDAO publicTransportDAO;
+    private PublicTransportDAO publicTransportDAO;
     @Autowired
-    TransitDAO transitDAO;
+    private TransitDAO transitDAO;
     @Autowired
-    MainDashboard mainDashboard;
+    private MainDashboard mainDashboard;
     @Autowired
-    TrafficJamDAO trafficJamDAO;
+    private TrafficJamDAO trafficJamDAO;
+    @Autowired
+    private CrossingPointDAO crossingPointDAO;
+    @Autowired
+    private CrossingDAO crossingDAO;
+
+
 
     private String generateStartDate(String period) {
         Calendar cal = Calendar.getInstance();
         if (period.equals("last_half")) {
+            /*Пол года*/
             cal.add(Calendar.DATE, -183);
         } else if (period.equals("last_month")) {
+            /*Месяц*/
             cal.add(Calendar.DATE, -30);
         } else if (period.equals("last_week")) {
+            /*Неделя*/
             cal.add(Calendar.DATE, -7);
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -60,18 +70,31 @@ public class RequestController {
         mainDashboard.setDelayList(delayDAO.getLast(startDate));
         mainDashboard.setAmountList(amountDAO.getLast(startDate));
         mainDashboard.setSpeedList(speedDAO.getLast(startDate));
+        mainDashboard.setTransitList(transitDAO.getLast(startDate));
         mainDashboard.setCurrentSpeed(speedDAO.getCurrent());
         mainDashboard.setCurrentDelay(delayDAO.getCurrent());
         mainDashboard.setCurrentAmount(amountDAO.getCurrent());
-        mainDashboard.setTransitList(transitDAO.getLast(startDate));
+
         return mainDashboard;
     }
 
 
-    @RequestMapping(value = "/speed/by_time", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/speed/by_time", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<Speed> getSpeedByTime(@RequestParam("start_time") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startTime, @RequestParam("end_time") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endTime) {
+    public List<Speed> getSpeedByTime(@RequestParam("start_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime, @RequestParam("end_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime) {
         return speedDAO.getByTime(startTime.toString(), endTime.toString());
+    }
+
+    @RequestMapping(value = "/crossing_points/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public List<CrossingPoint> getAllCrossingPoints() {
+        return crossingPointDAO.getAll();
+    }
+
+    @RequestMapping(value = "/crossing/by_time", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public List<Crossing> getCrossingByTime(@RequestParam("start_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime, @RequestParam("end_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime) {
+        return crossingDAO.getByTime(startTime.toString(), endTime.toString());
     }
 
     @RequestMapping(value = "/amount/by_time", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -110,5 +133,18 @@ public class RequestController {
     @ResponseBody
     public Iterable<TrafficJam> getTrafficJamsByTime(@RequestParam("start_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime, @RequestParam("end_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime) {
         return trafficJamDAO.getByTime(startTime.toString(), endTime.toString());
+    }
+
+    @RequestMapping(value = "/traffic_jam/top", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Iterable<TrafficJam> getTrafficJamsTop(@RequestParam("start_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime, @RequestParam("end_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime) {
+        return trafficJamDAO.getTop(startTime.toString(), endTime.toString());
+    }
+
+    @RequestMapping(value = "/transit/by_time", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Iterable<Transit> getTransitByTime(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate localDate) {
+
+        return transitDAO.getByTime((localDate).toString());
     }
 }

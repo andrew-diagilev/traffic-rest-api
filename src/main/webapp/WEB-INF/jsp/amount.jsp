@@ -22,12 +22,31 @@
     $(document).ready(function () {
         $("#updateDashboard").click(function () {
                 var data = $('#timeForm').serialize();
-                sendForm(data, '/amount/by_time');
+            var config = {
+                packages: ['corechart', 'table'],
+                XField: {type: 'string', name:'Час'},
+                YField: {type: 'number', name:'Кількість ТЗ'},
+                XJsonField: 'startTime',
+                YJsonField: 'amount',
+                options: {
+                    title: 'Кількість транспортних засобів по годинам',
+                    width: 1200,
+                    height: 600,
+                    legend: 'none',
+                    hAxis: {
+                        title: "Дата/час",
+                        textStyle: {
+                            fontSize: 9
+                        }
+                    },
+                }
+            }
+                sendForm(data, '/amount/by_time', config);
                 return false;
             }
         );
     });
-    function sendForm(data, url) {
+    function sendForm(data, url, config) {
         $.ajax({
             type: 'POST',
             headers: {
@@ -38,61 +57,47 @@
             url: url,
             success: function (result) {
                 google.charts.load('current', {
-                    'packages': ['corechart',]
+                    'packages': config.packages
                 });
-                google.charts.load('current', {'packages': ['gauge']});
-                google.charts.load('current', {'packages': ['table']});
                 google.charts.setOnLoadCallback(function () {
-                    drawChart(result);
+                    drawChart(result, config);
                 });
             }
         });
     }
 
-    /*    function compare( a, b ) {
-     return a-b;
-     }*/
-
-    function drawChart(result) {
+    function drawChart(result, config) {
 
         /*КІЛЬКІСТЬ*/
-        var amount = new google.visualization.DataTable();
-        amount.addColumn('string', 'Час');
-        amount.addColumn('number', 'Кількість');
+        var props = new google.visualization.DataTable();
+        props.addColumn(config.XField.type, config.XField.name);
+        props.addColumn(config.YField.type, config.YField.name);
 
-        var amountSortedTable = new google.visualization.DataTable();
-        amountSortedTable.addColumn('string', 'Час');
-        amountSortedTable.addColumn('number', 'Кількість ТЗ');
+        var sortedTable = new google.visualization.DataTable();
+        sortedTable.addColumn(config.XField.type, config.XField.name);
+        sortedTable.addColumn(config.YField.type, config.YField.name);
 
-        var amountArray = [];
+        var propsArray = [];
         $.each(result, function (i, obj) {
-            amountArray.push([obj.startTime, obj.amount]);
+            propsArray.push([obj[config.XJsonField], obj[config.YJsonField]])
         });
-        amount.addRows(amountArray);
+        props.addRows(propsArray);
 
-        var sortedAmountArray  =  [...amountArray];
-        sortedAmountArray.sort(function(a,b) { if (a[1] > b[1]) return -1;
-            if (a[1] < b[1]) return 1; });
-        sortedAmountArray.length=10;
-        amountSortedTable.addRows(sortedAmountArray);
-        var amount_options = {
-            title: 'Кількість транспортних засобів по годинам',
-            width: 1200,
-            height: 600,
-            legend: 'none',
-            hAxis: {
-                title: "Дата/час",
-                textStyle: {
-                    fontSize: 9
-                }
-            },
-        };
-        var amountChart = new google.visualization.ColumnChart(document
+        var sortedPropsArray = [...propsArray
+    ]
+        ;
+        sortedPropsArray.sort(function (a, b) {
+            if (a[1] > b[1]) return -1;
+            if (a[1] < b[1]) return 1;
+        });
+        sortedPropsArray.length = 10;
+        sortedTable.addRows(sortedPropsArray);
+        var chart = new google.visualization.ColumnChart(document
             .getElementById('amount'));
-        amountChart.draw(amount, amount_options);
-        var amountTable = new google.visualization.Table(document.getElementById('amountTable'));
+        chart.draw(props, config.options);
+        var table = new google.visualization.Table(document.getElementById('amountTable'));
 
-        amountTable.draw(amountSortedTable, {showRowNumber: true, width: '100%', height: '100%'});
+        table.draw(sortedTable, {showRowNumber: true, width: '100%', height: '100%'});
     }
 </script>
 <div class="container">

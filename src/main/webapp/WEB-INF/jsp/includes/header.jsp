@@ -18,16 +18,18 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="delay">Затримка</a>
-                    <a class="dropdown-item" href="#">Швидкість</a>
+                    <a class="dropdown-item" href="speed">Швидкість</a>
                     <a class="dropdown-item" href="/amount">Кількість унікальних ТЗ</a>
                     <a class="dropdown-item" href="/type">Кількість ТЗ за типом</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Транзит</a>
+                    <a class="dropdown-item" href="/transit">Транзит</a>
                     <a class="dropdown-item" href="traffic_jam">Рейтинг заторів/теплокарта</a>
                 </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/public_transport" tabindex="-1" aria-disabled="true">Громадський транспорт</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="/crossing_points" tabindex="-1" aria-disabled="true">Теплокарта транспортних засобів</a>
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
