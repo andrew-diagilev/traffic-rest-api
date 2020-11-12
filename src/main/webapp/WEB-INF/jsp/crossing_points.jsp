@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,22 +43,23 @@
     }
 
     .leaflet-container {
-        background: rgba(0, 0, 0, .8) !important;}
+        background: rgba(0, 0, 0, .8) !important;
+    }
 
     #speedGauge {
         position: fixed;
         right: 15px;
         top: 65%;
         display: block;
-        z-index:99999999;
+        z-index: 99999999;
     }
+
     svg:first-child > g > text[text-anchor~=middle] {
         font-size: 13px;
         font-weight: 500;
     }
-    .leaflet-div-field
-    {
-        background: orange;
+
+    .leaflet-div-field {
         border: 2px solid darkorange;
         border-radius: 5px;
         text-align: center;
@@ -67,9 +68,32 @@
         height: 23px !important;
         opacity: 0.7;
     }
+
+    .color1 {
+        background: #0ff43f;
+    }
+
+    .color2 {
+        background: #e3f400;
+    }
+
+    .color3 {
+        background: #f4b200;
+    }
+
+    .color4 {
+        background: #e45f00;
+    }
+
+    .color5 {
+        background: #f40004;
+    }
+
+
 </style>
 <link rel="stylesheet" href="css/prism.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-extra-markers@1.2.1/src/assets/css/leaflet.extra-markers.css">
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/leaflet-extra-markers@1.2.1/src/assets/css/leaflet.extra-markers.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
       integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
       crossorigin=""/>
@@ -81,84 +105,121 @@
 <script src="/js/heatmap.min.js"></script>
 <script src="/js/leaflet-heatmap.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet-extra-markers@1.2.1/dist/js/leaflet.extra-markers.min.js"></script>
-<jsp:include page="includes/header.jsp" />
-    <div>
-        <form id="timeForm" method="post"><label for="start_time">Початкова дата:</label>
-            <input type="datetime-local" name="start_time" id="start_time"/>
-            <label for="end_time">Кінцева дата:</label>
-            <input type="datetime-local" name="end_time" id="end_time"/>
-            <input id="updateDashboard" type="button" value="Оновити">
-        </form>
-    </div>
-    <div id="map" style="margin-top: 10px"></div>
-    <div id="speedGauge"></div>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#updateDashboard").click(function () {
-                    var data = $('#timeForm').serialize();
-                    var max_speed = $('#max_speed').val();
-                    sendForm(data, 'crossing/by_time', max_speed);
-                    return false;
+<jsp:include page="includes/header.jsp"/>
+<div>
+    <form id="timeForm" method="post"><label for="start_time">Початкова дата:</label>
+        <input type="datetime-local" name="start_time" id="start_time"/>
+        <label for="end_time">Кінцева дата:</label>
+        <input type="datetime-local" name="end_time" id="end_time"/>
+        <input id="updateDashboard" type="button" value="Оновити">
+    </form>
+</div>
+<div id="map" style="margin-top: 10px"></div>
+<div id="speedGauge"></div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#updateDashboard").click(function () {
+                var data = $('#timeForm').serialize();
+                var max_speed = $('#max_speed').val();
+                sendForm(data, 'crossing/by_time', max_speed);
+                return false;
 
-                }
-            );
-        });
-        function sendForm(data, url) {
-            $.ajax({
-                type: 'post',
-                headers: {
-                    Accept: "application/json; charset=utf-8"
-                },
-                dataType: "json",
-                url: url,
-                data: data,
-                success: function (result) {
-                    map.eachLayer((layer) => {
-                        layer.remove();
+            }
+        );
+    });
+    function sendForm(data, url) {
+        $.ajax({
+            type: 'post',
+            headers: {
+                Accept: "application/json; charset=utf-8"
+            },
+            dataType: "json",
+            url: url,
+            data: data,
+            success: function (result) {
+                map.eachLayer((layer) => {
+                    layer.remove();
+            })
+                ;
+                baseLayer.addTo(map);
+
+                var amountArray = result.map(function (el) {
+                    return el.amount
                 });
-                    baseLayer.addTo(map);
-                    for (var i = 0; i < result.length; i++) {
+                var devided = Math.max.apply(Math, (amountArray)) / 5;
 
-/*                    <svg viewbox="0 0 10 10">
-                            <defs>
-                            <circle id="circle" cx="5" cy="5" r="4" stroke-width="0.5" fill="transparent" />
-                            </defs>
-                            <use xlink:href="#circle" stroke="pink" stroke-dasharray="0,2.09,8.38,30" />
-                            <use xlink:href="#circle" stroke="green" stroke-dasharray="0,10.47,8.38,30" />
-                            <use xlink:href="#circle" stroke="orange" stroke-dasharray="2.09,16.75,6.3" />
-                            </svg>*/
 
-/*                        var numMarker = L.ExtraMarkers.icon({
-                            icon: 'fa-number',
-                            number: result[i].amount,
-                            markerColor: 'blue',
-                            fontSize: 10
+                for (var i = 0; i < result.length; i++) {
+
+                    /*                    <svg viewbox="0 0 10 10">
+                     <defs>
+                     <circle id="circle" cx="5" cy="5" r="4" stroke-width="0.5" fill="transparent" />
+                     </defs>
+                     <use xlink:href="#circle" stroke="pink" stroke-dasharray="0,2.09,8.38,30" />
+                     <use xlink:href="#circle" stroke="green" stroke-dasharray="0,10.47,8.38,30" />
+                     <use xlink:href="#circle" stroke="orange" stroke-dasharray="2.09,16.75,6.3" />
+                     </svg>*/
+
+                    /*                        var numMarker = L.ExtraMarkers.icon({
+                     icon: 'fa-number',
+                     number: result[i].amount,
+                     markerColor: 'blue',
+                     fontSize: 10
+                     });
+                     L.marker([result[i].lat, result[i].lon], {icon: numMarker}).addTo(map);*/
+
+                    if (result[i].amount > 0 && result[i].amount <= devided) {
+                        var icon = L.divIcon({
+                            className: 'leaflet-div-field color1',
+                            html: result[i].amount
                         });
-                        L.marker([result[i].lat, result[i].lon], {icon: numMarker}).addTo(map);*/
-
-                       var icon = L.divIcon({className: 'leaflet-div-field',
-                       html: result[i].amount});
                         L.marker([result[i].lat, result[i].lon], {icon: icon}).addTo(map);
-
                     }
-
+                    else if (result[i].amount > devided && result[i].amount <= devided * 2) {
+                        var icon = L.divIcon({
+                            className: 'leaflet-div-field color2',
+                            html: result[i].amount
+                        });
+                        L.marker([result[i].lat, result[i].lon], {icon: icon}).addTo(map);
+                    }
+                    else if (result[i].amount > devided * 2 && result[i].amount <= devided * 3) {
+                        var icon = L.divIcon({
+                            className: 'leaflet-div-field color3',
+                            html: result[i].amount
+                        });
+                        L.marker([result[i].lat, result[i].lon], {icon: icon}).addTo(map);
+                    }
+                    else if (result[i].amount > devided * 3 && result[i].amount <= devided * 4) {
+                        var icon = L.divIcon({
+                            className: 'leaflet-div-field color4',
+                            html: result[i].amount
+                        });
+                        L.marker([result[i].lat, result[i].lon], {icon: icon}).addTo(map);
+                    }
+                    else if (result[i].amount > devided * 4 && result[i].amount <= devided * 5) {
+                        var icon = L.divIcon({
+                            className: 'leaflet-div-field color5',
+                            html: result[i].amount
+                        });
+                        L.marker([result[i].lat, result[i].lon], {icon: icon}).addTo(map);
+                    }
                 }
-            });
-        }
-        var baseLayer = L.tileLayer(
-            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-                maxZoom: 18
-            });
-        var map = new L.Map('map', {
-            center: new L.LatLng(50.449087, 30.523772),
-            zoom: 14,
-            layers: [baseLayer]
+            }
         });
+    }
+    var baseLayer = L.tileLayer(
+        'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+            maxZoom: 18
+        });
+    var map = new L.Map('map', {
+        center: new L.LatLng(50.449087, 30.523772),
+        zoom: 14,
+        layers: [baseLayer]
+    });
 
 
-
-    </script>
+</script>
 </div>
 </body>
 </html>

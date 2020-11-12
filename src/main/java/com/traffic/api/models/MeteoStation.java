@@ -18,8 +18,9 @@ public class MeteoStation {
         private double lat;
         private double lon;
         private String location;
-       @OneToMany (mappedBy = "meteoStation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-       @JsonManagedReference
+/*       @OneToMany (mappedBy = "meteoStation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+       @JsonManagedReference*/
+@Transient
         private List<MeteoParameters> parametersList;
 
 

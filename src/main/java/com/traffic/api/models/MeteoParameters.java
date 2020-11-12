@@ -10,13 +10,9 @@ import javax.persistence.*;
 @Table(name = "meteo_param")
 public class MeteoParameters {
     @Id
-    @Column(name = "id")
     private Integer id;
-    @Column(name = "chemical_factor")
     private Double chemicalFactor;
-    @Column(name = "wind_direction_avg")
     private Double WindDirectionAvg;
-    @Column(name = "air_pressure")
     private Double airPressure;
     private Double rainAccum;
     private Double rainIntens;
@@ -33,10 +29,10 @@ public class MeteoParameters {
     private String meteoStationName;
     private String captureTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+/*    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="meteoStationName", nullable=false, insertable=false, updatable=false)
-    @JsonBackReference
-    private MeteoStation meteoStation;
+    @JsonBackReference*/
+    /*private MeteoStation meteoStation;*/
 
     public Integer getId() {
         return id;
@@ -182,11 +178,11 @@ public class MeteoParameters {
         this.captureTime = captureTime;
     }
 
-    public MeteoStation getMeteoStation() {
+/*    public MeteoStation getMeteoStation() {
         return meteoStation;
     }
 
     public void setMeteoStation(MeteoStation meteoStation) {
         this.meteoStation = meteoStation;
-    }
+    }*/
 }

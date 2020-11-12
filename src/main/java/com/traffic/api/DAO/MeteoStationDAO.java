@@ -13,8 +13,8 @@ import java.util.List;
 @Repository
 public interface MeteoStationDAO extends JpaRepository<MeteoStation, String> {
 
-    @Query("select distinct m from MeteoStation m join fetch m.parametersList p where p.captureTime >= :startTime and p.captureTime <= :endTime")
-    List<MeteoStation> findByDateTime(@Param("startTime" )String startTime, @Param("endTime" )String endTime);
+/*    @Query("select distinct m from MeteoStation m join fetch m.parametersList p where p.captureTime >= :startTime and p.captureTime <= :endTime")
+    List<MeteoStation> findByDateTime(@Param("startTime" )String startTime, @Param("endTime" )String endTime);*/
 
    @Query(value = "select distinct id, ip_address, port, lat, lon, location from meteo_station",  nativeQuery = true)
     List<MeteoStation> findAllMeteo();
