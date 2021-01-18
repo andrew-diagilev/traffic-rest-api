@@ -17,7 +17,7 @@ public class MeteoParameters {
     private Double rainAccum;
     private Double rainIntens;
     private Double rainState;
-    private Double windsSpeedAvq;
+    private Double windSpeedAvg;
     private Double surfaceSignal;
     private Double windSpeedMax;
     private Double temperatureAir;
@@ -26,6 +26,7 @@ public class MeteoParameters {
     private Double pavementSurfaceTemp;
     private Double relativeHumidity;
     private Double waterHeight;
+    private Double presentWeather;
     private String meteoStationName;
     private String captureTime;
 
@@ -33,6 +34,9 @@ public class MeteoParameters {
     @JoinColumn(name="meteoStationName", nullable=false, insertable=false, updatable=false)
     @JsonBackReference*/
     /*private MeteoStation meteoStation;*/
+
+
+
 
     public Integer getId() {
         return id;
@@ -91,11 +95,11 @@ public class MeteoParameters {
     }
 
     public Double getWindsSpeedAvq() {
-        return windsSpeedAvq;
+        return windSpeedAvg;
     }
 
     public void setWindsSpeedAvq(Double windsSpeedAvq) {
-        this.windsSpeedAvq = windsSpeedAvq;
+        this.windSpeedAvg = windsSpeedAvq;
     }
 
     public Double getSurfaceSignal() {
@@ -162,7 +166,15 @@ public class MeteoParameters {
         this.waterHeight = waterHeight;
     }
 
-   public String getMeteoStationName() {
+    public Double getPresentWeather() {
+        return presentWeather;
+    }
+
+    public void setPresentWeather(Double presentWeather) {
+        this.presentWeather = presentWeather;
+    }
+
+    public String getMeteoStationName() {
         return meteoStationName;
     }
 
