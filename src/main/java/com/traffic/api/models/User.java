@@ -1,8 +1,5 @@
 package com.traffic.api.models;
-
-
 import javax.persistence.*;
-
 
 @Entity
 @Table(name = "meteo_users")
@@ -12,6 +9,8 @@ public class User {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
     private String username;
+    private String name;
+    private String surname;
     private String password;
     private String role;
     private String email;
@@ -22,16 +21,10 @@ public class User {
     public User() {
     }
 
-    public User(String password, String role, String email, String phone, boolean telegram) {
-        this.password = password;
-        this.role = role;
-        this.email = email;
-        this.phone = phone;
-        this.telegram = telegram;
-    }
-
-    public User(String username, String password, String role, String email, String phone, boolean telegram) {
+    public User(String username, String name, String surname, String password, String role, String email, String phone, boolean telegram) {
         this.username = username;
+        this.name = name;
+        this.surname = surname;
         this.password = password;
         this.role = role;
         this.email = email;
@@ -43,7 +36,7 @@ public class User {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -53,6 +46,22 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getPassword() {
@@ -87,7 +96,7 @@ public class User {
         this.phone = phone;
     }
 
-    public boolean isTelegram() {
+    public boolean getTelegram() {
         return telegram;
     }
 

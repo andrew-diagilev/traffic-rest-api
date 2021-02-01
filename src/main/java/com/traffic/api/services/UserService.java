@@ -22,10 +22,10 @@ public class UserService {
         return userDAO.findAll();
     }
 
-    public String createUser(String username, String password, String role, String email, String phone, boolean telegram) {
+    public String createUser(String username, String name, String surname, String password, String role, String email, String phone, boolean telegram) {
         boolean userExists = userDAO.existsByUsername(username);
         if (!userExists) {
-            User newUser = userDAO.save(new User(username, password, role, email, phone, telegram));
+            User newUser = userDAO.save(new User(username, name, surname, password, role, email, phone, telegram));
             return new String("Користувача " + newUser.getUsername() + " " + " успішно створено");
         } else return new String("Помилка. Користувач вже існує");
     }
