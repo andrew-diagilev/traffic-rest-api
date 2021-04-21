@@ -1,6 +1,6 @@
 package com.traffic.api.DAO;
 
-import com.traffic.api.models.User;
+import com.traffic.api.models.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -4,6 +4,7 @@ package com.traffic.api.models;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.traffic.api.models.dto.MeteoStationDTO;
 
 import javax.persistence.*;
 import java.util.List;
@@ -79,5 +80,9 @@ public class MeteoStation {
 
     public void setParametersList(List<MeteoParameters> parametersList) {
         this.parametersList = parametersList;
+    }
+
+    public MeteoStationDTO getDTO (){
+        return new MeteoStationDTO(this.id, this.location, this.lat, this.lon);
     }
 }

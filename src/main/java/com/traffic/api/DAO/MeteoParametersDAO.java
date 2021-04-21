@@ -21,4 +21,5 @@ public interface MeteoParametersDAO  extends JpaRepository<MeteoParameters, Inte
     List<MeteoParameters> findTop1ByName (@Param("meteoStationName" )String name, Pageable pageable);
 
 
+
 }

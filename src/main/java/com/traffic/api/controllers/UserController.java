@@ -1,6 +1,6 @@
 package com.traffic.api.controllers;
 
-import com.traffic.api.models.User;
+import com.traffic.api.models.users.User;
 import com.traffic.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -34,7 +34,7 @@ public class UserController {
     @RequestMapping(value = "/api/user/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String createUser (@RequestBody User user) {
-        return userService.createUser(user.getUsername(), user.getName(), user.getSurname(), user.getPassword(), user.getRole(), user.getEmail(), user.getPhone(), user.getTelegram());
+        return userService.createUser(user.getUsername(), user.getName(), user.getSurname(), user.getPassword(), user.getRoles(), user.getEmail(), user.getPhone(), user.getTelegram());
     }
 
     @CrossOrigin
@@ -48,7 +48,7 @@ public class UserController {
     @RequestMapping(value = "/api/user/edit", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String editUser(@RequestBody User user) {
-        return userService.editUser(user.getId(), user.getPassword(), user.getRole(), user.getEmail(), user.getPhone(), user.getTelegram());
+        return userService.editUser(user.getId(), user.getPassword(), user.getRoles(), user.getEmail(), user.getPhone(), user.getTelegram());
     }
 
     @CrossOrigin

@@ -1,18 +1,23 @@
-package com.traffic.api.models;
+package com.traffic.api.models.users;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "meteo_users")
 public class User {
     @Id
-    @Column(name = "id",unique=true, nullable = false)
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String username;
     private String name;
     private String surname;
     private String password;
-    private String role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "meteo_user_roles", joinColumns ={@JoinColumn(name="user_id", referencedColumnName = "id")},
+            inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName = "id")})
+    private List<Role> roles;
     private String email;
     private String phone;
     private boolean telegram;
@@ -21,12 +26,12 @@ public class User {
     public User() {
     }
 
-    public User(String username, String name, String surname, String password, String role, String email, String phone, boolean telegram) {
+    public User(String username, String name, String surname, String password, List<Role> role, String email, String phone, boolean telegram) {
         this.username = username;
         this.name = name;
         this.surname = surname;
         this.password = password;
-        this.role = role;
+        this.roles = role;
         this.email = email;
         this.phone = phone;
         this.telegram = telegram;
@@ -72,12 +77,12 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
+    public List<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     public String getEmail() {
