@@ -3,6 +3,7 @@ import com.traffic.api.DAO.MeteoParametersDAO;
 import com.traffic.api.DAO.MeteoStationDAO;
 import com.traffic.api.models.MeteoParameters;
 import com.traffic.api.models.MeteoStation;
+import com.traffic.api.models.dto.MeteoStationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -42,14 +44,16 @@ public class MeteoController {
     @CrossOrigin
     @RequestMapping(value = "/api/meteo_station/param/last", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<MeteoStation> getStationsLast() {
+    public List<MeteoStationDTO> getStationsLast() {
 
         List<MeteoStation> meteoStationList = meteoStationDAO.findAll();
+        List<MeteoStationDTO> meteoStationDTOList = new ArrayList();
         for (MeteoStation meteoStation : meteoStationList) {
-            meteoStation.setParametersList(meteoParametersDAO.findTop1ByName(meteoStation.getId(), PageRequest.of(0, 1)));
+            MeteoStationDTO meteoStationDTO = meteoStation.getDTO();
+            meteoStationDTO.setParametersList(meteoParametersDAO.findTop1ByName(meteoStation.getId(), PageRequest.of(0, 1)));
+            meteoStationDTOList.add(meteoStationDTO);
         }
-
-        return meteoStationList;
+        return meteoStationDTOList;
     }
 
     @CrossOrigin

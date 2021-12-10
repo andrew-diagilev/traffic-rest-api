@@ -1,11 +1,14 @@
 package com.traffic.api.services;
 
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class PushNotificationService {
@@ -14,7 +17,8 @@ public class PushNotificationService {
     private HttpURLConnection con;
     private String topic = "meteoAll";
 
-    public String subscribeTokenToTopic(String token) {
+    public Map<String, String> subscribeTokenToTopic(String token) {
+        Map <String, String> map = new HashMap<String, String>();
         int responseCode = 0;
         try {
             url = new URL("https://iid.googleapis.com/iid/v1/" + token + "/rel/topics/" + topic);
@@ -31,10 +35,12 @@ public class PushNotificationService {
             e.printStackTrace();
         }
         if (responseCode == HttpURLConnection.HTTP_OK) {
-            return new String("Підписка на тривожні повідомлення виконана");
+            map.put("status", "success");
+            return map;
         }
         else{
-            return new String("Помилка підписки");
+            map.put("status", "error");
+            return map;
         }
     }
 }

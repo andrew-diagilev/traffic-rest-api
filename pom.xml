@@ -91,7 +91,10 @@
                     <artifactId>spring-boot-starter-tomcat</artifactId>
                     <scope>provided</scope>
                 </dependency>-->
+
     </dependencies>
+
+
 
     <build>
         <plugins>
@@ -100,6 +103,15 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>static</directory>
+                <targetPath>static</targetPath>
+            </resource>
+        </resources>
     </build>
 
 </project>

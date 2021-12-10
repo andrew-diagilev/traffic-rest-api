@@ -1,6 +1,10 @@
 package com.traffic.api.models.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.traffic.api.models.MeteoParameters;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class MeteoStationDTO {
@@ -8,6 +12,7 @@ public class MeteoStationDTO {
     private String location;
     private Double lat;
     private Double lon;
+    private List<MeteoParameters> parametersList;
 
     public MeteoStationDTO() {
     }
@@ -49,5 +54,13 @@ public class MeteoStationDTO {
 
     public void setLon(Double lon) {
         this.lon = lon;
+    }
+    public void setParametersList(List<MeteoParameters> parametersList) {
+        this.parametersList = parametersList;
+    }
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public List<MeteoParameters> getParametersList() {
+        return parametersList;
     }
 }

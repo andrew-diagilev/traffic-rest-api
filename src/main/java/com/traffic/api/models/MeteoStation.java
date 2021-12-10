@@ -21,10 +21,9 @@ public class MeteoStation {
         private String location;
 /*       @OneToMany (mappedBy = "meteoStation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
        @JsonManagedReference*/
+
 @Transient
-        private List<MeteoParameters> parametersList;
-
-
+private List<MeteoParameters> parametersList;
 
     public String getId() {
         return id;
@@ -82,6 +81,7 @@ public class MeteoStation {
         this.parametersList = parametersList;
     }
 
+    @JsonIgnore
     public MeteoStationDTO getDTO (){
         return new MeteoStationDTO(this.id, this.location, this.lat, this.lon);
     }

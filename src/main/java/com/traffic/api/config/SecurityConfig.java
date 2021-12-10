@@ -5,6 +5,7 @@ import com.traffic.api.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,6 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String ADMIN_ENDPOINT = "/api/admin/**";
     private static final String LOGIN_ENDPOINT = "/api/auth/login";
+
 
     @Autowired
     public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
@@ -43,7 +45,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(LOGIN_ENDPOINT).permitAll()
                 .antMatchers(ADMIN_ENDPOINT).hasRole("admin")
-                .antMatchers("/api/user/all").authenticated()
+                .antMatchers(
+                        HttpMethod.GET,
+                "/css/**", "/js/**","/index*", "/static/**", "/*.js", "/*.json", "/*.ico", "/*.css", "/*.scss", "/*.jpg", "/*.png", "/*.html" )
+                .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
