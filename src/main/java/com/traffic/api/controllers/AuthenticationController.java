@@ -1,4 +1,4 @@
-package com.traffic.api.controllers;
+/*package com.traffic.api.controllers;
 import com.traffic.api.models.dto.AuthenticationRequest;
 import com.traffic.api.models.users.User;
 import com.traffic.api.security.JwtTokenProvider;
@@ -55,3 +55,4 @@ public class AuthenticationController {
         }
     }
 }
+*/

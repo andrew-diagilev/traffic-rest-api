@@ -1,3 +1,4 @@
+/*
 package com.traffic.api.security;
 
 
@@ -33,3 +34,4 @@ public class JwtUserDetailService implements UserDetailsService {
         return jwtUser;
     }
 }
+*/

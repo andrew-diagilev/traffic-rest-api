@@ -1,4 +1,4 @@
-package com.traffic.api.security;
+/*package com.traffic.api.security;
 
 
 import org.springframework.security.core.AuthenticationException;
@@ -12,4 +12,4 @@ public class JwtAuthenticationException  extends AuthenticationException {
         super(msg);
     }
 }
-
+*/

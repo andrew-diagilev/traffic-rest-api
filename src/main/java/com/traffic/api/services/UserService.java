@@ -1,4 +1,4 @@
-package com.traffic.api.services;
+/*package com.traffic.api.services;
 
 import com.traffic.api.DAO.UserDAO;
 import com.traffic.api.models.users.Role;
@@ -17,6 +17,7 @@ public class UserService {
 
     @Autowired
     private UserDAO userDAO;
+
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
@@ -74,3 +75,4 @@ public class UserService {
 
 
 }
+*/

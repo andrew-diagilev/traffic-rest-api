@@ -1,4 +1,4 @@
-package com.traffic.api.security;
+/*package com.traffic.api.security;
 
 
 import org.springframework.security.core.Authentication;
@@ -35,4 +35,4 @@ public class JwtTokenFilter extends GenericFilterBean {
         filterChain.doFilter(req, res);
     }
 }
-
+*/

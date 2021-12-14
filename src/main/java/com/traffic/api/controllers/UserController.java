@@ -1,4 +1,4 @@
-package com.traffic.api.controllers;
+/*package com.traffic.api.controllers;
 
 import com.traffic.api.models.users.User;
 import com.traffic.api.services.UserService;
@@ -61,3 +61,4 @@ public class UserController {
     }
 
 }
+*/

@@ -1,4 +1,4 @@
-package com.traffic.api.security;
+/*package com.traffic.api.security;
 
 
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
@@ -19,3 +19,4 @@ public class JwtConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilt
         httpSecurity.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
+*/

@@ -1,4 +1,4 @@
-package com.traffic.api.security;
+/*package com.traffic.api.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
@@ -91,3 +91,4 @@ public class JwtUser implements UserDetails {
         return true;
     }
 }
+*/

@@ -1,4 +1,4 @@
-package com.traffic.api.config;
+/*package com.traffic.api.config;
 
 import com.traffic.api.security.JwtConfigurer;
 import com.traffic.api.security.JwtTokenProvider;
@@ -57,3 +57,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .apply(new JwtConfigurer(jwtTokenProvider));
     }
 }
+*/

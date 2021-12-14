@@ -1,4 +1,4 @@
-package com.traffic.api.controllers;
+/*package com.traffic.api.controllers;
 
 
 import com.traffic.api.models.Camera;
@@ -37,3 +37,4 @@ public class CameraController {
 
 
 }
+*/

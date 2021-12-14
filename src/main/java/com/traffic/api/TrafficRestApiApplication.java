@@ -2,12 +2,10 @@ package com.traffic.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
-@EnableAutoConfiguration
 @SpringBootApplication
 @AutoConfigurationPackage
 public class TrafficRestApiApplication extends SpringBootServletInitializer {

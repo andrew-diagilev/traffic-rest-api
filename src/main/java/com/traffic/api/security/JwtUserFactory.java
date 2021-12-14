@@ -1,3 +1,4 @@
+/*
 package com.traffic.api.security;
 
 
@@ -23,3 +24,4 @@ public final class JwtUserFactory {
         return roles.stream().map(role ->new SimpleGrantedAuthority(role.getRole())).collect(Collectors.toList());
     }
 }
+*/
