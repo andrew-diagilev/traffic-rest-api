@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#"><!--Портал моніторингу параметрів міського трафіку--><img src="img/logo.png" width="50%" height="50%"/></a>
+    <a class="navbar-brand" href="#"><!--Портал моніторингу параметрів міського трафіку--><img src="img/logo.png" width="30%"/></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -32,9 +32,5 @@
             <li class="nav-item"><a class="nav-link" href="/crossing_points" tabindex="-1" aria-disabled="true">Теплокарта транспортних засобів</a>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <a class="nav-link">Користувач:</a>
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Вихід</button>
-        </form>
     </div>
 </nav>

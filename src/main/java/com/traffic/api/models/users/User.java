@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "meteo_users")
+@Table(name = "users")
 public class User {
     @Id
     @Column(name = "id", unique = true, nullable = false)
@@ -15,7 +15,7 @@ public class User {
     private String surname;
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "meteo_user_roles", joinColumns ={@JoinColumn(name="user_id", referencedColumnName = "id")},
+    @JoinTable(name = "user_roles", joinColumns ={@JoinColumn(name="user_id", referencedColumnName = "id")},
             inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName = "id")})
     private List<Role> roles;
     private String email;

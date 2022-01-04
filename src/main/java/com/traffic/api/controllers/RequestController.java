@@ -144,7 +144,6 @@ public class RequestController {
     @RequestMapping(value = "/transit/by_time", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Iterable<Transit> getTransitByTime(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate localDate) {
-
         return transitDAO.getByTime((localDate).toString());
     }
 }

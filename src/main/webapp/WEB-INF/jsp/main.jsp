@@ -107,7 +107,9 @@
             transitArray.push([new Date(obj.startTime), obj.amount]);
         });
         transit.addRows(transitArray);
-        var currentTransit = transitArray[transitArray.length - 1][1];
+        var currentTransit;
+        if(transitArray.length !== 0){currentTransit = transitArray[transitArray.length - 1][1];}
+        else currentTransit = 0;
 
         if(chartHeight == undefined && chartWidth == undefined){
             chartHeight = document.getElementsByClassName('card h-100')[0].offsetHeight * 2;
