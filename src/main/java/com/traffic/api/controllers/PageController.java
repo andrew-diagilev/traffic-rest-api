@@ -55,9 +55,4 @@ public class PageController {
     public String transit() {
         return ("transit");
     }
-
-    @GetMapping("/meteo")
-    public String meteo() {
-        return ("meteo");
-    }
 }

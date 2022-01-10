@@ -14,7 +14,7 @@ public interface TransitDAO extends JpaRepository<Transit, Integer>{
             "\t\tORDER BY amount\n" +
             "\t) id, date(t.start_time) as start_time, date(t.start_time) as end_time, sum(t.amount) as amount, 'all' as road_name \n" +
             "    from (SELECT in_id, crossing_point.road_name, sum(amount) as amount, start_time \n" +
-            "    FROM db_traffic.transit join crossing_point on crossing_point.id = transit.in_id \n" +
+            "    FROM db_traffic_odessa.transit join crossing_point on crossing_point.id = transit.in_id \n" +
             "    where start_time >= ?1  \n" +
             "    group by in_id, start_time \n" +
             "    order by amount desc) as t \n" +

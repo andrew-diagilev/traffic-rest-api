@@ -297,9 +297,6 @@
                 <div class="card-body">
                     <div class="gauge" id="speedGauge"></div>
                 </div>
-                <div class="card-footer">
-                    <small class="text-muted">Оновлено: </small>
-                </div>
             </div>
         </div>
         <div class="col-md-10 mb-4">
