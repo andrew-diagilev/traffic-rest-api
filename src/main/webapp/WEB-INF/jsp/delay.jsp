@@ -59,12 +59,12 @@
         var delay = new google.visualization.DataTable();
         delay.addColumn('string', 'Час');
         delay.addColumn('number', 'Затримка');
-        delay.addColumn('number', 'Середня затримка 2019');
+        delay.addColumn('number', 'Середня затримка 2020');
 
         var delaySortedTable = new google.visualization.DataTable();
         delaySortedTable.addColumn('string', 'Час');
         delaySortedTable.addColumn('number', 'Затримка');
-        delaySortedTable.addColumn('number', 'Середня затримка 2019');
+        delaySortedTable.addColumn('number', 'Середня затримка 2020');
 
 
 
@@ -83,7 +83,6 @@
             width: 1200,
             height: 600,
             legend: {position: 'none'},
-            curveType: 'function',
             colors: ['#e4000b', '#FFA500'],
             hAxis: {
                 title: "Дата/час",

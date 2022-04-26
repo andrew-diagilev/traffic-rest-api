@@ -30,6 +30,7 @@
             }
         );
     });
+
     function sendForm(data, url) {
         $.ajax({
             type: 'POST',
@@ -112,7 +113,7 @@
         else currentTransit = 0;
 
         if(chartHeight == undefined && chartWidth == undefined){
-            chartHeight = document.getElementsByClassName('card h-100')[0].offsetHeight * 2;
+            chartHeight = document.getElementsByClassName('card h-100')[0].offsetHeight * 3;
             chartWidth = document.getElementsByClassName('chart')[0].offsetWidth;
         }
 
@@ -218,9 +219,9 @@
         var amountGaugeOption = {
             width: document.getElementsByClassName('gauge')[0].offsetWidth,
             height: document.getElementsByClassName('gauge')[0].offsetWidth,
-            redFrom: 750000, redTo: 1000000,
-            yellowFrom: 650000, yellowTo: 750000,
-            max: 1000000,
+            redFrom: 400000, redTo: 500000,
+            yellowFrom: 300000, yellowTo: 400000,
+            max: 500000,
 
         };
 

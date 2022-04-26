@@ -34,7 +34,6 @@
                         width: 1200,
                         height: 600,
                         legend: 'none',
-                        curveType: 'function',
                         colors: ['#e49307'],
                         hAxis: {
                             title: "Дата/час",

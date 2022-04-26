@@ -19,47 +19,83 @@
 <body>
 <jsp:include page="includes/header.jsp"/>
 <script type="text/javascript">
-    google.charts.load("current", {packages: ["corechart"]});
-    google.charts.setOnLoadCallback(drawChart);
+
+    $(document).ready(function () {
+        doRequest('amount_plate_type');
+    });
+
+    function doRequest(url) {
+        $.ajax({
+            type: 'GET',
+            headers: {
+                Accept: "application/json; charset=utf-8"
+            },
+            dataType: "json",
+            url: url,
+            success: function (result) {
+                google.charts.load('current', {
+                    'packages': ['corechart',]
+                });
+                google.charts.load("current", {packages: ["corechart"]});
+                google.charts.setOnLoadCallback(function () {
+                    drawChart(result);
+                });
+            }
+        });
+    }
 
 
     function drawChart(result) {
         var typeArray = [
-            ['AA/KA Київ', 381377],
-            ['AI/KI Київська обл.', 102583],
-            ['Інші області', 228339],
-            ['Інші автономера', 121446],
-
+            /*['Одеська обл.', 169846],
+             ['Інші області', 26386],
+             ['Інші автономера', 52526],*/
         ];
-
 
         var typeArrayDetailed = [
-            ['АН/KH Донецька обл.', 22832],
-            ['AЕ/KE Дніпровська обл.', 17395],
-            ['AM/KM Житомирська обл.', 14816],
-            ['CA/IA Черкаська обл.', 14722],
-            ['AB/KB Вінницька обл.', 13139],
-            ['CB/IB Чернігівська обл.', 12910],
-            ['AP/KP Запорізька обл.', 10828],
-            ['BB/HB Луганська обл.', 10300],
-            ['BI/HI Полтавська обл.', 10229],
-            ['BM/HM Сумська обл.', 10133],
-            ['BC/HC Львівська обл.', 9782],
-            ['AX/KX Харківська обл.', 9703],
-            ['AO/KO Закарпатьська обл.', 5256],
-            ['AT/KT Івано-Франківська обл.', 5157],
-            ['BH/HH Одеська обл.', 7988],
-            ['AC/KC Волинська обл.', 7639],
-            ['BK/HK Рівненьська обл.', 6752],
-            ['BE/HE Миколаївська обл.', 6507],
-            ['BX/HX Хмельницька обл.', 6434],
-            ['BA/HA Кіровоградська обл.', 6135],
-            ['AK/KK АР Крим	', 5298],
-            ['BO/HO Тернопільська обл.', 4781],
-            ['BT/HT Херсонська обл.', 4170],
-            ['CE/IE Чернівецька обл.', 3622],
-            ['CH/IH Севастопіль', 1811],
+            /* ['AA/KA Київ', 6279],
+             ['AI/KI Київська обл.', 1374],
+             ['АН/KH Донецька обл.', 71],
+             ['AЕ/KE Дніпровська обл.', 1889],
+             ['AM/KM Житомирська обл.', 366],
+             ['CA/IA Черкаська обл.', 871],
+             ['AB/KB Вінницька обл.', 1686],
+             ['CB/IB Чернігівська обл.', 348],
+             ['AP/KP Запорізька обл.', 758],
+             ['BB/HB Луганська обл.', 655],
+             ['BI/HI Полтавська обл.', 1209],
+             ['BM/HM Сумська обл.', 689],
+             ['BC/HC Львівська обл.', 681],
+             ['AX/KX Харківська обл.', 757],
+             ['AO/KO Закарпатьська обл.', 133],
+             ['AT/KT Івано-Франківська обл.', 240],
+             ['AC/KC Волинська обл.', 323],
+             ['BK/HK Рівненьська обл.', 373],
+             ['BE/HE Миколаївська обл.', 3546],
+             ['BX/HX Хмельницька обл.', 524],
+             ['BA/HA Кіровоградська обл.', 1201],
+             ['AK/KK АР Крим	', 94],
+             ['BO/HO Тернопільська обл.', 235],
+             ['BT/HT Херсонська обл.', 1344],
+             ['CE/IE Чернівецька обл.', 246],
+             ['CH/IH Севастопіль', 492],*/
         ];
+
+        $.each(result, function (i, obj) {
+            if (obj.region === 'Одеська обл.' || obj.region === 'Інші області' || obj.region === 'Інші автономера') {
+                typeArray.push([obj.region, obj.amount]);
+            }
+            else typeArrayDetailed.push([obj.region, obj.amount]);
+        });
+
+        var otherTypes = 0;
+
+        $.each(typeArrayDetailed, function (i, obj) {
+            otherTypes += obj[1];
+        });
+        typeArray.push(['Інші області', otherTypes]);
+
+        typeArrayDetailed.sort((a, b) => a[1] > b[1] ? 1 : -1);
 
         /*За типом номерів*/
         var plateType = new google.visualization.DataTable();
@@ -73,7 +109,7 @@
         plateType.addRows(typeArray);
         plateTypeDetailed.addRows(typeArrayDetailed);
         var plateTypeOptions = {
-            title: 'Гістограма за типом номерних знаків',
+            title: 'Гістограма за типом номерних знаків ' + new Date(result[0].startTime).toLocaleDateString(),
             is3D: true,
             width: 900,
             height: 800,
