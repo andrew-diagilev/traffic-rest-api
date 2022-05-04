@@ -204,9 +204,9 @@
         var delayGaugeOption = {
             width: document.getElementsByClassName('gauge')[0].offsetWidth,
             height: document.getElementsByClassName('gauge')[0].offsetWidth,
-            redFrom: 0.8, redTo: 1.5,
+            redFrom: 80, redTo: 150,
             yellowFrom: 0.5, yellowTo: 0.8,
-            max: 1.5,
+            max: 150,
 
         };
 

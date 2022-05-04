@@ -174,7 +174,7 @@
     var heatmapLayer = new HeatmapOverlay(cfg);
 
     var map = new L.Map('map', {
-        center: new L.LatLng(46.4795998,30.7226228),
+        center: new L.LatLng(49.840131, 24.029243),
         zoom: 14,
         layers: [baseLayer, heatmapLayer]
     });

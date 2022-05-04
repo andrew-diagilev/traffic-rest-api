@@ -82,7 +82,7 @@
         ];
 
         $.each(result, function (i, obj) {
-            if (obj.region === 'Одеська обл.' || obj.region === 'Інші області' || obj.region === 'Інші автономера') {
+            if (obj.region === 'Львівська обл.' || obj.region === 'Інші області' || obj.region === 'Інші автономера') {
                 typeArray.push([obj.region, obj.amount]);
             }
             else typeArrayDetailed.push([obj.region, obj.amount]);
