@@ -16,6 +16,5 @@ public interface DelayDAO extends JpaRepository<Delay, Integer> {
 
     @Query(value ="SELECT round(current_delay, 0) FROM db_traffic_lviv.vehicles_delay ORDER BY ID DESC LIMIT 1", nativeQuery = true)
     public Double getCurrent();
-
 }
 
