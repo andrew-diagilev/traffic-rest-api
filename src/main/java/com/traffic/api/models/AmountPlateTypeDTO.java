@@ -1,4 +1,5 @@
 package com.traffic.api.models;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
@@ -12,7 +13,6 @@ public class AmountPlateTypeDTO {
     private String endTime;
     @Transient
     private String region;
-
 
     public AmountPlateTypeDTO(Integer id, Integer amount, String startTime, String endTime, String region) {
         this.id = id;
