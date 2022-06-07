@@ -2,7 +2,7 @@
 package com.traffic.api.DAO;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.traffic.api.models.WeekDayDelayDTO;
+import com.traffic.api.models.dto.WeekDayDelayDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

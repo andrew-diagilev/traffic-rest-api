@@ -1,7 +1,7 @@
-
 package com.traffic.api.models;
 
-
+import com.traffic.api.DAO.PublicTransportAmountDAO;
+import com.traffic.api.DAO.WeekDayDelayDAO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -12,10 +12,12 @@ public class MainDashboard {
     private List<Speed> speedList;
     private List<Delay> delayList;
     private List<Transit> transitList;
+    private List<WeekDayDelayDAO.WeekDayDelay> weekDayDelayList;
     private Integer currentSpeed;
     private Double currentDelay;
     private Integer currentAmount;
     private Integer currentTransit;
+    private List<PublicTransportAmountDAO.PublicTransportAmount> currentPublicTransportAmountList;
 
     public List<Amount> getAmountList() {
         return amountList;
@@ -49,6 +51,14 @@ public class MainDashboard {
         this.transitList = transitList;
     }
 
+    public List<WeekDayDelayDAO.WeekDayDelay> getWeekDayDelayList() {
+        return weekDayDelayList;
+    }
+
+    public void setWeekDayDelayList(List<WeekDayDelayDAO.WeekDayDelay> weekDayDelayList) {
+        this.weekDayDelayList = weekDayDelayList;
+    }
+
     public Integer getCurrentSpeed() {
         return currentSpeed;
     }
@@ -79,5 +89,13 @@ public class MainDashboard {
 
     public void setCurrentTransit(Integer currentTransit) {
         this.currentTransit = currentTransit;
+    }
+
+    public List<PublicTransportAmountDAO.PublicTransportAmount> getCurrentPublicTransportAmountList() {
+        return currentPublicTransportAmountList;
+    }
+
+    public void setCurrentPublicTransportAmountList(List<PublicTransportAmountDAO.PublicTransportAmount> currentPublicTransportAmountList) {
+        this.currentPublicTransportAmountList = currentPublicTransportAmountList;
     }
 }

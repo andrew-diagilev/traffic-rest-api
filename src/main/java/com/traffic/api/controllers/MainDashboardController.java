@@ -1,9 +1,6 @@
 package com.traffic.api.controllers;
 
-import com.traffic.api.DAO.AmountDAO;
-import com.traffic.api.DAO.DelayDAO;
-import com.traffic.api.DAO.SpeedDAO;
-import com.traffic.api.DAO.TransitDAO;
+import com.traffic.api.DAO.*;
 import com.traffic.api.models.MainDashboard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -14,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class RequestController {
+public class MainDashboardController {
 
     @Autowired
     private SpeedDAO speedDAO;
@@ -23,21 +20,23 @@ public class RequestController {
     @Autowired
     private DelayDAO delayDAO;
     @Autowired
+    private WeekDayDelayDAO weekDayDelayDAO;
+    @Autowired
     private TransitDAO transitDAO;
+    @Autowired
+    private PublicTransportAmountDAO publicTransportAmountDAO;
     @Autowired
     private MainDashboard mainDashboard;
 
-    @RequestMapping(value = "/main_dash_board", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/api/dashboard", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public MainDashboard getData(@RequestParam("period") String period) {
-        String startDate = new DateRangeGenerator().generateStartDate(period);
-        mainDashboard.setDelayList(delayDAO.getLast(startDate));
-        mainDashboard.setAmountList(amountDAO.getLast(startDate));
-        mainDashboard.setSpeedList(speedDAO.getLast(startDate));
-        mainDashboard.setTransitList(transitDAO.getLast(startDate));
+    public MainDashboard getData() {
+
+        mainDashboard.setWeekDayDelayList(weekDayDelayDAO.getAvgDelay());
         mainDashboard.setCurrentSpeed(speedDAO.getCurrent());
         mainDashboard.setCurrentDelay(delayDAO.getCurrent());
         mainDashboard.setCurrentAmount(amountDAO.getCurrent());
+        mainDashboard.setCurrentPublicTransportAmountList(publicTransportAmountDAO.getAmountType());
         return mainDashboard;
     }
 }

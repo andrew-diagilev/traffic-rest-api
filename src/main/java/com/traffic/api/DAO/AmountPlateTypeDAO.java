@@ -1,6 +1,6 @@
 package com.traffic.api.DAO;
 
-import com.traffic.api.models.AmountPlateTypeDTO;
+import com.traffic.api.models.dto.AmountPlateTypeDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

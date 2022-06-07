@@ -1,4 +1,4 @@
-package com.traffic.api.models;
+package com.traffic.api.models.dto;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

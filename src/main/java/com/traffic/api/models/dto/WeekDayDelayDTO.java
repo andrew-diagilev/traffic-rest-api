@@ -1,6 +1,4 @@
-package com.traffic.api.models;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+package com.traffic.api.models.dto;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
